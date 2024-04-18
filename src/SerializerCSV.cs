@@ -18,7 +18,7 @@ namespace Telemetria
             using (StreamWriter sw = new StreamWriter(csvFilePath))
             {
 
-                sw.WriteLine("UserId, SessionID, EventType, Timestamp");
+                sw.WriteLine("UserId, SessionID, EventType, Timestamp, ItemName, Position");
 
                 // Escribir cada evento como una fila en el archivo CSV
                 foreach (Event ev in events)

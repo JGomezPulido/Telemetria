@@ -101,19 +101,15 @@ namespace Telemetria
     public class UseItem : Event
     {
         string item_name { get; set; }
-        float position_x { get; set; }
-        float position_y { get; set; }
         public UseItem(string itemN, float x, float y)
         {
             event_type = "UseItem";
-            position_x = x;
-            position_y = y;
             item_name = itemN;
         }
 
         public override string serialize()
         {
-            return base.serialize() + $"{item_name},{position_x},{position_y}";
+            return base.serialize() + $"{item_name}";
         }
     }
 
