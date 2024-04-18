@@ -23,6 +23,11 @@ namespace Telemetria
             event_type = "";
             send_time = DateTimeOffset.Now.ToUnixTimeSeconds();
         }
+
+        public virtual string serialize()
+        {
+            return $"{id_user},{id_session},{event_type},{send_time}";
+        }
     }
 
     // Eventos basicos
@@ -84,6 +89,11 @@ namespace Telemetria
             item_name = itemN;
 
         }
+
+        public override string serialize()
+        {
+            return base.serialize() + $"{item_name},{position_x},{position_y}";
+        }
     }
 
     public class UseItem : Event
@@ -97,6 +107,11 @@ namespace Telemetria
             position_x = x;
             position_y = y;
             item_name = itemN;
+        }
+
+        public override string serialize()
+        {
+            return base.serialize() + $"{item_name},{position_x},{position_y}";
         }
     }
 

@@ -25,7 +25,7 @@ namespace Telemetria
                 {
 
                     // Escribir la línea en el archivo
-                    string csvLine = $"{ev.id_user},{ev.id_session},{ev.event_type},{ev.send_time}";
+                    string csvLine = ev.serialize();
 
                     sw.WriteLine(csvLine);
                 }
