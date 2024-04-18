@@ -8,7 +8,7 @@ using System.IO;
 namespace Telemetria
 {
 
-    internal class SerializerCSV
+    public class SerializerCSV
     {
 
         string csvFilePath = "eventos.csv";

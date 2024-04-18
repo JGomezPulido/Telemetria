@@ -16,10 +16,10 @@ namespace Telemetria
 
         private ConcurrentQueue<Event> eventsQueue = new ConcurrentQueue<Event>();
         private List<Event> pendingEvents = new List<Event>();
-        private Thread? savingThread; 
+        private Thread? persistThread; 
         private Tracker()
         {
-
+            persistThread = new Thread(()=>threadLoop());
         }
 
         public static void Init()
@@ -32,10 +32,9 @@ namespace Telemetria
         }
         public void trackEvent(in Event evt)
         {
+            //Preparar el evento para con los datos de la sesion
             eventsQueue.Enqueue(evt);
-
-
         }
-
+        public void 
     }
 }
