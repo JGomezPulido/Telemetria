@@ -14,27 +14,74 @@ namespace Telemetria
         public static Tracker? Instance { get { return _instance; } }
 
 
-        private ConcurrentQueue<Event> eventsQueue = new ConcurrentQueue<Event>();
-        private List<Event> pendingEvents = new List<Event>();
-        private Thread? persistThread; 
-        private Tracker()
+        private ConcurrentQueue<Event> eventsQueue;
+        private List<Event> pendingEvents;
+        private Thread persistThread;
+
+        private string userId;
+        private string sessionId;
+        private int gameId;
+
+        private Tracker(string userId)
         {
-            persistThread = new Thread(()=>threadLoop());
+            eventsQueue = new ConcurrentQueue<Event>();
+            pendingEvents = new List<Event>();
+            this.userId = userId;
+            this.sessionId = Guid.NewGuid().ToString();
+            gameId = -1;
+            persistThread = new Thread(() => ThreadLoop());
         }
 
-        public static void Init()
+        public static bool Init(string userId)
         {
-            _instance = new Tracker();
+            _instance = new Tracker(userId);
+            _instance.TrackEvent(new StartSession());
+            try
+            {
+                _instance.StartThread();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
         }
-        public static  void Close()
+        private void StartThread()
         {
+            persistThread.Start();
+        }
+        public static void Close()
+        {
+            if (_instance == null)
+            {
+                return;
+            }
+            _instance?.End();
 
         }
-        public void trackEvent(in Event evt)
+        private void End()
         {
-            //Preparar el evento para con los datos de la sesion
+            persistThread.Join();
+        }
+        public void TrackEvent(in Event evt)
+        {
+            //Preparar el evento con los datos de la sesion
+            if( ((StartSession) evt) !=null)
+            {
+                gameId++;
+            }
+            evt.id_session = sessionId;
+            evt.id_user = userId;
+            evt.id_game = gameId.ToString();
             eventsQueue.Enqueue(evt);
         }
-        public void 
+        private void ThreadLoop()
+        {
+
+        }
+        private void Save()
+        {
+
+        }
     }
 }

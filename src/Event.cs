@@ -13,6 +13,7 @@ namespace Telemetria
         public string id_user { get; internal set; }
         public string id_session { get; internal set; }
         public string event_type { get; internal set; }
+        public string id_game { get; internal set; }
         public long send_time { get; protected set; }
 
 
@@ -20,6 +21,7 @@ namespace Telemetria
         {
             id_user = "0";
             id_session = "";
+            id_game = "";
             event_type = "";
             send_time = DateTimeOffset.Now.ToUnixTimeSeconds();
         }
