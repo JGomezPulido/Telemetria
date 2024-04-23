@@ -16,11 +16,11 @@ namespace Telemetria
 
         private ConcurrentQueue<Event> eventsQueue;
         private Thread persistThread;
-
+        private List<IPersistance> _persisters;
         private string userId;
         private string sessionId;
         private int gameId;
-
+        private static string telemetryDataPath;
         private const UInt32 SAVING_FREQ = 10000;
 
         private Tracker(string userId)
@@ -28,15 +28,26 @@ namespace Telemetria
             eventsQueue = new ConcurrentQueue<Event>();
             this.userId = userId;
             this.sessionId = Guid.NewGuid().ToString();
+            _persisters = new List<IPersistance>();
+            _persisters.Add(new FilePersistance(new SerializerJSON(), $"{telemetryDataPath}events.json"));
             gameId = -1;
             _cancellationTokenSource = new CancellationTokenSource();
             persistThread = new Thread(() => ThreadLoop(_cancellationTokenSource.Token));
         }
 
-        public static bool Init(string userId)
+        /// <summary>
+        /// Inicializa el Tracker
+        /// </summary>
+        /// <param name="userId">Id única del usuario</param>
+        /// <param name="appDataPath">
+        /// Path al directorio de datos del juego (sin barra separadora al final,
+        /// para conseguirlo en Unity se puede usar Application.persistentDataPath</param>
+        /// <returns>Returns true if the instance was initialized correctly, false otherwise</returns>
+        public static bool Init(string userId, string appDataPath)
         {
             _instance = new Tracker(userId);
             _instance.TrackEvent(new StartSession());
+            telemetryDataPath = $"{appDataPath}\\Telemetry\\";
             try
             {
                 _instance.StartThread();
@@ -93,8 +104,10 @@ namespace Telemetria
         private void SaveAll()
         {
             while(eventsQueue.TryDequeue(out var evt)) {
-                //persister.Persist();
-                Console.WriteLine("Evento");
+               foreach(IPersistance persister in _persisters)
+                {
+                    persister.Save(evt);
+                }
             }
         }
     }
