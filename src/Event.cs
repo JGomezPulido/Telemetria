@@ -77,7 +77,7 @@ namespace Telemetria
         }
     }
 
-    // Eventos de Dinosouls
+    // Eventos de Dinosouls, Meter en el juego probablemente
     public class GetItem : Event
     {
         string item_name { get; set; }
