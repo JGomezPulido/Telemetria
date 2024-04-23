@@ -65,7 +65,7 @@ namespace Telemetria
             TrackEvent(new EndSession());
             _cancellationTokenSource.Cancel();
             persistThread.Join();
-            Save();
+            SaveAll();
         }
         public void TrackEvent(in Event evt)
         {
@@ -87,13 +87,14 @@ namespace Telemetria
 
                 if (result == WaitHandle.WaitTimeout)
                     break;
-                Save();
+                SaveAll();
             }
         }
-        private void Save()
+        private void SaveAll()
         {
             while(eventsQueue.TryDequeue(out var evt)) {
-                persister.Persist();
+                //persister.Persist();
+                Console.WriteLine("Evento");
             }
         }
     }
