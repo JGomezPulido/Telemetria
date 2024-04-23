@@ -9,9 +9,9 @@ namespace Telemetria
 {
     public class SerializerJSON
     {
-        public object Serialize(Event e) => JsonConvert.SerializeObject(e, new JsonSerializerSettings
+        public object Serialize(Event e)
         {
-            Formatting = Formatting.None
-        });
+            return JsonConvert.SerializeObject(e, Formatting.None);
+        }
     }
 }
