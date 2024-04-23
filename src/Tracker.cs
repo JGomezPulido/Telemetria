@@ -12,24 +12,25 @@ namespace Telemetria
     {
         private static Tracker? _instance;
         public static Tracker? Instance { get { return _instance; } }
-
+        CancellationTokenSource _cancellationTokenSource;
 
         private ConcurrentQueue<Event> eventsQueue;
-        private List<Event> pendingEvents;
         private Thread persistThread;
 
         private string userId;
         private string sessionId;
         private int gameId;
 
+        private const UInt32 SAVING_FREQ = 10000;
+
         private Tracker(string userId)
         {
             eventsQueue = new ConcurrentQueue<Event>();
-            pendingEvents = new List<Event>();
             this.userId = userId;
             this.sessionId = Guid.NewGuid().ToString();
             gameId = -1;
-            persistThread = new Thread(() => ThreadLoop());
+            _cancellationTokenSource = new CancellationTokenSource();
+            persistThread = new Thread(() => ThreadLoop(_cancellationTokenSource.Token));
         }
 
         public static bool Init(string userId)
@@ -61,7 +62,10 @@ namespace Telemetria
         }
         private void End()
         {
+            TrackEvent(new EndSession());
+            _cancellationTokenSource.Cancel();
             persistThread.Join();
+            Save();
         }
         public void TrackEvent(in Event evt)
         {
@@ -72,16 +76,25 @@ namespace Telemetria
             }
             evt.id_session = sessionId;
             evt.id_user = userId;
-            evt.id_game = gameId.ToString();
+            evt.id_game = HashCode.Combine(gameId,userId,sessionId).ToString();
             eventsQueue.Enqueue(evt);
         }
-        private void ThreadLoop()
+        private void ThreadLoop(CancellationToken tk)
         {
+            while (true)
+            {
+                int result = WaitHandle.WaitAny(new WaitHandle[] { tk.WaitHandle }, TimeSpan.FromMilliseconds(SAVING_FREQ));
 
+                if (result == WaitHandle.WaitTimeout)
+                    break;
+                Save();
+            }
         }
         private void Save()
         {
-
+            while(eventsQueue.TryDequeue(out var evt)) {
+                persister.Persist();
+            }
         }
     }
 }
