@@ -3,33 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace Telemetria
 {
-
     public class SerializerCSV
     {
-
-        string csvFilePath = "eventos.csv";
-        public void exportar(List<Event> events)
+        public object Serialize(Event e)
         {
-            // Abrir el archivo en modo escritura
-            using (StreamWriter sw = new StreamWriter(csvFilePath))
+            using (StringWriter sb = new StringWriter())
             {
+                var properties = e.GetType().GetProperties();
+                foreach (var property in properties)
+                    sb.Write($"{property.Name},{property.GetValue(e)},");
 
-                sw.WriteLine("UserId, SessionID, EventType, Timestamp, ItemName, Position");
-
-                // Escribir cada evento como una fila en el archivo CSV
-                foreach (Event ev in events)
-                {
-
-                    // Escribir la línea en el archivo
-                    string csvLine = ev.serialize();
-
-                    sw.WriteLine(csvLine);
-                }
-
+                return sb.ToString().TrimEnd(',');
             }
         }
     }
