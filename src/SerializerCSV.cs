@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Telemetria
 {
-    public class SerializerCSV
+    public class SerializerCSV : ISerializer
     {
         public object Serialize(Event e)
         {
-            using (StringWriter sb = new StringWriter())
+            using (StringWriter sw = new StringWriter())
             {
                 var properties = e.GetType().GetProperties();
                 foreach (var property in properties)
-                    sb.Write($"{property.Name},{property.GetValue(e)},");
+                    sw.Write($"{property.Name},{property.GetValue(e)},");
 
-                return sb.ToString().TrimEnd(',');
+                return sw.ToString().TrimEnd(',');
             }
         }
     }

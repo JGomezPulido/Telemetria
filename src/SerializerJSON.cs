@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Telemetria
 {
-    public class SerializerJSON
+    public class SerializerJSON : ISerializer
     {
         public object Serialize(Event e)
         {
