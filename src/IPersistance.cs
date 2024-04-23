@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Telemetria
 {
-    internal interface IPersistance
+    public interface IPersistance
     {
         void Save(Event e);
 
