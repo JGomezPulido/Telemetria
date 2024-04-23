@@ -8,7 +8,7 @@ namespace Telemetria
 {
     internal interface IPersistance
     {
-        void Persist(Event e);
+        void Save(Event e);
 
     }
 }
