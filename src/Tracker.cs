@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Concurrent;
+using UnityEngine;
 
 namespace Telemetria
 {
