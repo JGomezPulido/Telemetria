@@ -12,7 +12,7 @@ namespace Telemetria
     {
         private static Tracker? _instance;
         public static Tracker? Instance { get { return _instance; } }
-        CancellationTokenSource _cancellationTokenSource;
+        CancellationTokenSource? _cancellationTokenSource;
 
         private ConcurrentQueue<Event> eventsQueue;
         private Thread persistThread;
@@ -20,7 +20,7 @@ namespace Telemetria
         private string userId;
         private string sessionId;
         private int gameId;
-        private static string telemetryDataPath;
+        private static string? telemetryDataPath;
         private const UInt32 SAVING_FREQ = 10000;
 
         private Tracker(string userId)
