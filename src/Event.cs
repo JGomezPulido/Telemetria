@@ -35,15 +35,16 @@ namespace Telemetria
     // Eventos basicos
     public class StartSession : Event
     {
-        public StartSession()
+        public StartSession() : base()
         {
+            
             event_type = "StartSession";
         }
     }
 
     public class EndSession : Event
     {
-        public EndSession()
+        public EndSession() : base()
         {
             event_type = "EndSession";
 
@@ -52,7 +53,7 @@ namespace Telemetria
 
     public class StartGame : Event
     {
-        public StartGame()
+        public StartGame() : base()
         {
             event_type = "StartGame";
 
@@ -61,7 +62,7 @@ namespace Telemetria
 
     public class EndGame : Event
     {
-        public EndGame()
+        public EndGame() : base()
         {
             event_type = "EndGame";
 
@@ -70,7 +71,7 @@ namespace Telemetria
 
     public class GameAborted : Event
     {
-        public GameAborted()
+        public GameAborted() : base()
         {
             event_type = "GameAborted";
 
@@ -83,7 +84,7 @@ namespace Telemetria
         string item_name { get; set; }
         float position_x { get; set; }
         float position_y { get; set; }
-        public GetItem(string itemN, float x, float y)
+        public GetItem(string itemN, float x, float y) : base()
         {
             event_type = "GetItem";
             position_x = x;
@@ -101,7 +102,7 @@ namespace Telemetria
     public class UseItem : Event
     {
         string item_name { get; set; }
-        public UseItem(string itemN, float x, float y)
+        public UseItem(string itemN, float x, float y) : base()
         {
             event_type = "UseItem";
             item_name = itemN;

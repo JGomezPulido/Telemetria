@@ -82,7 +82,7 @@ namespace Telemetria
         public void TrackEvent(in Event evt)
         {
             //Preparar el evento con los datos de la sesion
-            if( ((StartSession) evt) !=null)
+            if( evt.event_type == "StartSession")
             {
                 gameId++;
             }
