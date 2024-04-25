@@ -12,7 +12,7 @@ namespace Telemetria
     {
         public string id_user { get; internal set; }
         public string id_session { get; internal set; }
-        public string event_type { get; internal set; }
+        public string event_type { get; protected set; }
         public string id_game { get; internal set; }
         public long send_time { get; protected set; }
 
@@ -78,41 +78,6 @@ namespace Telemetria
         }
     }
 
-    // Eventos de Dinosouls, Meter en el juego probablemente
-    public class GetItem : Event
-    {
-        string item_name { get; set; }
-        float position_x { get; set; }
-        float position_y { get; set; }
-        public GetItem(string itemN, float x, float y) : base()
-        {
-            event_type = "GetItem";
-            position_x = x;
-            position_y = y;
-            item_name = itemN;
-
-        }
-
-        public override string serialize()
-        {
-            return base.serialize() + $"{item_name},{position_x},{position_y}";
-        }
-    }
-
-    public class UseItem : Event
-    {
-        string item_name { get; set; }
-        public UseItem(string itemN, float x, float y) : base()
-        {
-            event_type = "UseItem";
-            item_name = itemN;
-        }
-
-        public override string serialize()
-        {
-            return base.serialize() + $"{item_name}";
-        }
-    }
 
 }
 
