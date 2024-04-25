@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Telemetria;
+using System.IO;
 
 namespace Telemetria
 {

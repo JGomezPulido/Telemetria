@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.7.34031.279
+VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telemetria", "Telemetria.csproj", "{3B273284-3460-4187-AC78-C89DC615555C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telemetria", "Telemetria.csproj", "{B14E7AED-D359-44CA-A22B-EE0FEB753D8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3B273284-3460-4187-AC78-C89DC615555C}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{3B273284-3460-4187-AC78-C89DC615555C}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{3B273284-3460-4187-AC78-C89DC615555C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B273284-3460-4187-AC78-C89DC615555C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B14E7AED-D359-44CA-A22B-EE0FEB753D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B14E7AED-D359-44CA-A22B-EE0FEB753D8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B14E7AED-D359-44CA-A22B-EE0FEB753D8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B14E7AED-D359-44CA-A22B-EE0FEB753D8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {86D9DCD2-B545-46BB-AE8B-A49E10769493}
+		SolutionGuid = {B3E0842C-3A6C-43CD-B21A-5B4C2732B64C}
 	EndGlobalSection
 EndGlobal
