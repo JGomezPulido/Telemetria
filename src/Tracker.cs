@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
 using System.Collections.Concurrent;
-using System.IO;
 
 namespace Telemetria
 {
@@ -23,6 +22,7 @@ namespace Telemetria
         private string sessionId;
         private int gameId;
         private static string? telemetryDataPath;
+        public static string? TelemetryDataPath { get; }
         private const UInt32 SAVING_FREQ = 10000;
 
         private Tracker(string userId)
@@ -31,7 +31,7 @@ namespace Telemetria
             this.userId = userId;
             this.sessionId = Guid.NewGuid().ToString();
             _persisters = new List<IPersistance>();
-            _persisters.Add(new FilePersistance(new SerializerJSON(), $"{telemetryDataPath}events.json"));
+            addFilePersister(new SerializerJSON(), "events.json");
             gameId = -1;
             _cancellationTokenSource = new CancellationTokenSource();
             persistThread = new Thread(() => ThreadLoop(_cancellationTokenSource.Token));
@@ -47,11 +47,9 @@ namespace Telemetria
         /// <returns>Returns true if the instance was initialized correctly, false otherwise</returns>
         public static bool Init(string userId, string appDataPath)
         {
-            telemetryDataPath = $"{appDataPath}/Telemetry/";
-            Directory.CreateDirectory(telemetryDataPath);
             _instance = new Tracker(userId);
             _instance.TrackEvent(new StartSession());
-           
+            telemetryDataPath = $"{appDataPath}\\Telemetry\\";
             try
             {
                 _instance.StartThread();
@@ -75,6 +73,16 @@ namespace Telemetria
             _instance?.End();
 
         }
+
+        public void addPersistance(IPersistance persistance)
+        {
+            _persisters.Add(persistance);
+        }
+
+        public void addFilePersister(ISerializer serializer, string file)
+        {
+            _persisters.Add(new FilePersistance(serializer, $"{telemetryDataPath}{file}"));
+        }
         private void End()
         {
             TrackEvent(new EndSession());
@@ -85,13 +93,13 @@ namespace Telemetria
         public void TrackEvent(in Event evt)
         {
             //Preparar el evento con los datos de la sesion
-            if( evt.event_type == "StartSession")
+            if (((StartSession)evt) != null)
             {
                 gameId++;
             }
             evt.id_session = sessionId;
             evt.id_user = userId;
-            evt.id_game = HashCode.Combine(gameId,userId,sessionId).ToString();
+            evt.id_game = HashCode.Combine(gameId, userId, sessionId).ToString();
             eventsQueue.Enqueue(evt);
         }
         private void ThreadLoop(CancellationToken tk)
@@ -100,15 +108,16 @@ namespace Telemetria
             {
                 int result = WaitHandle.WaitAny(new WaitHandle[] { tk.WaitHandle }, TimeSpan.FromMilliseconds(SAVING_FREQ));
 
-                if (result != WaitHandle.WaitTimeout)
+                if (result == WaitHandle.WaitTimeout)
                     break;
                 SaveAll();
             }
         }
         private void SaveAll()
         {
-            while(eventsQueue.TryDequeue(out var evt)) {
-               foreach(IPersistance persister in _persisters)
+            while (eventsQueue.TryDequeue(out var evt))
+            {
+                foreach (IPersistance persister in _persisters)
                 {
                     persister.Save(evt);
                 }
