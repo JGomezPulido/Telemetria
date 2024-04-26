@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
 using System.Collections.Concurrent;
+using System.IO;
 
 namespace Telemetria
 {
@@ -47,9 +48,11 @@ namespace Telemetria
         /// <returns>Returns true if the instance was initialized correctly, false otherwise</returns>
         public static bool Init(string userId, string appDataPath)
         {
+            telemetryDataPath = $"{appDataPath}/Telemetry/";
+            Directory.CreateDirectory(telemetryDataPath);
             _instance = new Tracker(userId);
             _instance.TrackEvent(new StartSession());
-            telemetryDataPath = $"{appDataPath}\\Telemetry\\";
+            
             try
             {
                 _instance.StartThread();
@@ -86,14 +89,18 @@ namespace Telemetria
         private void End()
         {
             TrackEvent(new EndSession());
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource?.Cancel();
             persistThread.Join();
             SaveAll();
+            foreach(var persistance in _persisters)
+            {
+                persistance.Close();
+            }
         }
         public void TrackEvent(in Event evt)
         {
             //Preparar el evento con los datos de la sesion
-            if (((StartSession)evt) != null)
+            if (evt.event_type == "StartSession")
             {
                 gameId++;
             }
@@ -108,7 +115,7 @@ namespace Telemetria
             {
                 int result = WaitHandle.WaitAny(new WaitHandle[] { tk.WaitHandle }, TimeSpan.FromMilliseconds(SAVING_FREQ));
 
-                if (result == WaitHandle.WaitTimeout)
+                if (result != WaitHandle.WaitTimeout)
                     break;
                 SaveAll();
             }

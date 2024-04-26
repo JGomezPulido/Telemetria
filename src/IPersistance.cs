@@ -9,6 +9,6 @@ namespace Telemetria
     public interface IPersistance
     {
         void Save(Event e);
-
+        abstract void Close();
     }
 }

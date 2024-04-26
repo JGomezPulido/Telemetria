@@ -17,7 +17,7 @@ namespace Telemetria
         }
 
         protected abstract void Save(object data);
-
+        public abstract void Close();
         public void Save(Event e)
         {
             Save(serializer.Serialize(e));
