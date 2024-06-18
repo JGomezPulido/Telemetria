@@ -13,5 +13,10 @@ namespace Telemetria
         {
             return JsonConvert.SerializeObject(e, Formatting.None);
         }
+
+        public string Setup()
+        {
+            return string.Empty;
+        }
     }
 }

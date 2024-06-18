@@ -8,6 +8,7 @@ namespace Telemetria
 {
     public interface ISerializer
     {
+        string Setup();
         object Serialize(Event e);
     }
 }

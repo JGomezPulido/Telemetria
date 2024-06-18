@@ -7,15 +7,16 @@ using System.IO;
 
 namespace Telemetria
 {
-    public sealed class FilePersistance : PersistanceSystem
+    public class FilePersistance : PersistanceSystem
     {
-        private string path;
-        StreamWriter stream;
+        protected string path;
+        protected StreamWriter stream;
         public FilePersistance(ISerializer ser, string path) : base(ser)
         {
             this.path = path;
             FileStream file = File.Create(path);
             stream = new StreamWriter(file);
+            stream.WriteLine(ser.Setup());
         }
 
         protected override void Save(object data)
