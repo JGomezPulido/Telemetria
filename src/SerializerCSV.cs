@@ -53,8 +53,7 @@ namespace Telemetria
                         sw.Write(";");
                     }
                 }
-
-                return sw.ToString();
+                return sw.ToString().TrimEnd(';');
             }
         }
 
