@@ -1,0 +1,10 @@
+{
+    "minimumPosition": {
+        "x": -13,
+        "y": -13 
+    },
+    "maximumPosition" : {
+        "x": 68,
+        "y": 52
+    }
+}
