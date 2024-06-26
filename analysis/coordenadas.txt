@@ -1,3 +1,0 @@
-
-posicion minima = -13 x -13 y
-posicion maxima = 68 x 52 y 
