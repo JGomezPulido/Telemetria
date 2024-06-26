@@ -15,20 +15,42 @@ namespace Telemetria
         {
             this.path = path;
             FileStream file = File.Create(path);
-            stream = new StreamWriter(file);
-            stream.WriteLine(ser.Setup());
+            try
+            {
+                stream = new StreamWriter(file);
+                stream.WriteLine(ser.Setup());
+            }
+            catch(FileNotFoundException e)
+            {
+                Console.WriteLine("Error: No se ha encontrado el archivo {file}");
+                Console.WriteLine(e.Message);
+            }
         }
 
         protected override void Save(object data)
         {
-            
-            stream.WriteLine(data);
-            
+            try
+            {
+                stream.WriteLine(data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Fallo al intentar persistir el archivo \n");
+                Console.WriteLine(e.Message + "\n");
+            }
         }
 
         public override void Close()
         {
-            stream.Close();
+            try
+            {
+                stream.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Fallo al intentar cerrar \n");
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
