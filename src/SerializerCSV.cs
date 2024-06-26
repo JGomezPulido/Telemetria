@@ -65,7 +65,7 @@ namespace Telemetria
                 final += _gameProperties[i];
                 final += ";";
            }
-            return final;
+            return final.TrimEnd(';');
         }
     }
 }
