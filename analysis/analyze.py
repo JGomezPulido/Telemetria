@@ -26,6 +26,9 @@ class GameMetrics:
         self.PopulateData()
 
     def PopulateData(self) -> None:
+        '''
+        Populates the data dictionary with the calculated metrics
+        '''
         self.data['spearPicks'] = self.spearPickCount
         self.data['tricePicked'] = self.triceTotemPicked
         self.data['ankyloPicked'] = self.ankyloTotemPicked
@@ -69,13 +72,19 @@ def get_folder_csv(path) -> list:
     return files
 
 def get_games(eventsTable: pd.DataFrame) -> list:
-    
+    '''
+    Generates the lists of metrics with one instance for each distinct game id in the dataframe
+    '''
     gameGroups = eventsTable.groupby("id_game")
     gamesList = [GameMetrics(g[1]) for g in gameGroups]
     return gamesList
 
 
 def generate_percentages(numeric: bool, dataframe: pd.DataFrame, label: str, title: str, filename: str, graphText: list, threshold: int) -> None:
+    '''
+    Calculates and generates a pie chart in the given dataframe with the given label, if numeric is True, it will calculate the relative counts for values above and below the threshold parameter,
+    else it will calculate the percentages based on the value_counts(normalize=true) function.
+    '''
     BoolToString = lambda x: graphText[0] if x else graphText[1]
 
     if numeric:
@@ -113,7 +122,7 @@ def main() -> None:
     mapMaxPositionY = mapData['maximumPosition']['y']
     extent = [mapMinPositionX, mapMaxPositionX, mapMinPositionY , mapMaxPositionY]
 
-    #Calculo el heatmap de las plantas
+    #Calculamos el heatmap de las plantas
     plantUses = []
     for game in games:
         plantUses.extend(game.plantPickPositions)
@@ -125,6 +134,7 @@ def main() -> None:
     ax.set_xticks(range(mapMinPositionX, mapMaxPositionX, 10))
     ax.set_yticks(range(mapMinPositionY, mapMaxPositionY, 10))
     
+     #generamos la tabla de medias
     if not os.path.exists(resultsPath):
         os.mkdir(resultsPath)
     fig.savefig(f'{resultsPath}heatmap.png')
@@ -132,6 +142,7 @@ def main() -> None:
     gamesMetrics = [g.GetData() for g in games]
     gamesMetricsDataFrame = pd.DataFrame(gamesMetrics)
     
+   
     meansDataFrame = gamesMetricsDataFrame.drop(['tricePicked', 'ankyloPicked'], axis = 1).mean()
     fig,ax = plt.subplots(tight_layout=True)
     ax.set_title('Medias de uso y recogida de items')
@@ -139,6 +150,7 @@ def main() -> None:
     ax.set_xticklabels(['Recogida Lanza', 'Uso Triceratops', 'Uso Anquilo', 'Uso plantas', 'Uso Lanza'])
     fig.savefig(f'{resultsPath}means.png')
 
+    #Generamos porcentajes 
     generate_percentages(True, gamesMetricsDataFrame, 'spearPicks', 'Porcentaje de partidas en las que se ha recogido la lanza', f'{resultsPath}spearPickedPercent', ['Cogida', 'No Cogida'], 0)
     generate_percentages(True, gamesMetricsDataFrame, 'plantUses', 'Porcentaje de partidas en las que se han usado las plantas', f'{resultsPath}plantsUsedPercent', ['Usada', 'No Usada'], 0)
     generate_percentages(True, gamesMetricsDataFrame, 'spearUses', 'Porcentaje de partidas en las que se ha usado la lanza', f'{resultsPath}spearUsedPercent', ['Usadas', 'No Usadas'], 0)
