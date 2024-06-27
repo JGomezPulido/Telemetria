@@ -142,8 +142,10 @@ def main() -> None:
     generate_percentages(True, gamesMetricsDataFrame, 'spearPicks', 'Porcentaje de partidas en las que se ha recogido la lanza', f'{resultsPath}spearPickedPercent', ['Cogida', 'No Cogida'], 0)
     generate_percentages(True, gamesMetricsDataFrame, 'plantUses', 'Porcentaje de partidas en las que se han usado las plantas', f'{resultsPath}plantsUsedPercent', ['Usada', 'No Usada'], 0)
     generate_percentages(True, gamesMetricsDataFrame, 'spearUses', 'Porcentaje de partidas en las que se ha usado la lanza', f'{resultsPath}spearUsedPercent', ['Usadas', 'No Usadas'], 0)
-    generate_percentages(False, gamesMetricsDataFrame, 'tricePicked', 'Porcentaje de partidas en las que se ha recogido el Triceratpos', f'{resultsPath}tricePercent', ['Recogido', 'No Recogido'],0)
+    generate_percentages(False, gamesMetricsDataFrame, 'tricePicked', 'Porcentaje de partidas en las que se ha recogido el Triceratops', f'{resultsPath}tricePercent', ['Recogido', 'No Recogido'],0)
     generate_percentages(False, gamesMetricsDataFrame, 'ankyloPicked', 'Porcentaje de partidas en las que se ha recogido el Anquilosaurio', f'{resultsPath}ankyloPercent', ['Recogido', 'No Recogido'],0)
+    generate_percentages(True, gamesMetricsDataFrame, 'triceUses', 'Porcentaje de partidas en las que se ha usado el Triceratops', f'{resultsPath}triceUsedPercent', ['Usado', 'No Usado'],0)
+    generate_percentages(True, gamesMetricsDataFrame, 'ankyloUses', 'Porcentaje de partidas en las que se ha usado el Anquilosaurio', f'{resultsPath}ankyloUsedPercent', ['Usado', 'No Usado'],0)
    
     
 
