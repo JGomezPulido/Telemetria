@@ -87,7 +87,7 @@ def generate_percentages(numeric: bool, dataframe: pd.DataFrame, label: str, tit
     dataPercent.index = dataPercent.index.map(BoolToString)
     fig,ax = fig,ax = plt.subplots(tight_layout=True)
     
-    ax = dataPercent.plot.pie(fig = fig, ax = ax)
+    ax = dataPercent.plot.pie(fig = fig, ax = ax, autopct='%1.1f%%')
     ax.set_ylabel('')
     ax.set_title(title)
     fig.savefig(filename)
